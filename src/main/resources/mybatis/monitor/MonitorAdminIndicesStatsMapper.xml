@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.project.bigdata.mapper.MonitorAdminIndicesStatsMapper">
+    
+    <resultMap type="MonitorAdminIndicesStats" id="MonitorAdminIndicesStatsResult">
+        <result property="id"    column="id"    />
+        <result property="clusterinfo"    column="clusterInfo"    />
+        <result property="monitortype"    column="monitorType"    />
+        <result property="indexname"    column="indexName"    />
+        <result property="indexprimaries"    column="indexPrimaries"    />
+        <result property="doccount"    column="docCount"    />
+        <result property="storesize"    column="storeSize"    />
+        <result property="indextotal"    column="indexTotal"    />
+        <result property="indexcurrent"    column="indexCurrent"    />
+        <result property="gettotal"    column="getTotal"    />
+        <result property="getcurrent"    column="getCurrent"    />
+        <result property="querytotal"    column="queryTotal"    />
+        <result property="querycurrent"    column="queryCurrent"    />
+        <result property="scrolltotal"    column="scrollTotal"    />
+        <result property="scrollcurrent"    column="scrollCurrent"    />
+        <result property="mergescurrent"    column="mergesCurrent"    />
+        <result property="mergersdocs"    column="mergersDocs"    />
+        <result property="refreshtotal"    column="refreshTotal"    />
+        <result property="flushtotal"    column="flushTotal"    />
+        <result property="querycachesize"    column="queryCacheSize"    />
+        <result property="querycachetotal"    column="queryCacheTotal"    />
+        <result property="querycachehitcount"    column="queryCacheHitCount"    />
+        <result property="querycachemisscount"    column="queryCacheMissCount"    />
+        <result property="segmentscount"    column="segmentsCount"    />
+        <result property="segmentsmemorysize"    column="segmentsMemorySize"    />
+        <result property="segmentsmemorytermssize"    column="segmentsMemoryTermsSize"    />
+        <result property="translogsize"    column="translogSize"    />
+        <result property="inserttime"    column="insertTime"    />
+    </resultMap>
+
+    <sql id="selectMonitorAdminIndicesStatsVo">
+        select id, clusterInfo, monitorType, indexName, indexPrimaries, docCount, storeSize, indexTotal, indexCurrent, getTotal, getCurrent, queryTotal, queryCurrent, scrollTotal, scrollCurrent, mergesCurrent, mergersDocs, refreshTotal, flushTotal, queryCacheSize, queryCacheTotal, queryCacheHitCount, queryCacheMissCount, segmentsCount, segmentsMemorySize, segmentsMemoryTermsSize, translogSize, insertTime from monitor_admin_indices_stats
+    </sql>
+
+    <select id="selectMonitorAdminIndicesStatsList2" parameterType="MonitorAdminIndicesStats" resultMap="MonitorAdminIndicesStatsResult">
+        <include refid="selectMonitorAdminIndicesStatsVo"/>
+        <where>
+            and indexprimaries = 'total'
+            <if test="clusterinfo != null  and clusterinfo != ''"> and clusterInfo = #{clusterinfo}</if>
+            <if test="indexname != null  and indexname != ''"> and indexName like concat('%', #{indexname}, '%')</if>
+        </where>
+    </select>
+    <select id="selectMonitorAdminIndicesStatsList3" parameterType="MonitorAdminIndicesStats" resultMap="MonitorAdminIndicesStatsResult">
+    select t.id,t.clusterinfo,t.indexname,t.doccount,t.storesize,t.indextotal,t.querytotal,t.segmentscount
+    from  (SELECT clusterInfo,indexName,max(inserttime) as insertTime from monitor_admin_indices_stats  GROUP BY clusterInfo,indexName) a
+    left join monitor_admin_indices_stats t on t.insertTime=a.insertTime and t.clusterInfo=a.clusterInfo and t.indexName=a.indexName
+    <where>
+        and indexprimaries = 'total'
+        <if test="clusterinfo != null  and clusterinfo != ''"> and t.clusterInfo = #{clusterinfo}</if>
+        <if test="indexname != null  and indexname != ''"> and t.indexName like concat('%', #{indexname}, '%')</if>
+    </where>
+</select>
+    <select id="selectMonitorAdminIndicesStatsList" parameterType="MonitorAdminIndicesStats" resultMap="MonitorAdminIndicesStatsResult">
+        <include refid="selectMonitorAdminIndicesStatsVo"/>
+        <where>
+            and indexprimaries = 'total'
+            <if test="clusterinfo != null  and clusterinfo != ''"> and clusterInfo = #{clusterinfo}</if>
+            <if test="indexname != null  and indexname != ''"> and indexName like concat('%', #{indexname}, '%')</if>
+             and indexName!='all'
+        </where>
+        order by insertTime desc,indexName asc
+        limit #{esindexcount}
+    </select>
+    
+    <select id="selectMonitorAdminIndicesStatsById" parameterType="Long" resultMap="MonitorAdminIndicesStatsResult">
+        <include refid="selectMonitorAdminIndicesStatsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMonitorAdminIndicesStats" parameterType="MonitorAdminIndicesStats" useGeneratedKeys="true" keyProperty="id">
+        insert into monitor_admin_indices_stats
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clusterinfo != null  and clusterinfo != ''">clusterInfo,</if>
+            <if test="monitortype != null  and monitortype != ''">monitorType,</if>
+            <if test="indexname != null  and indexname != ''">indexName,</if>
+            <if test="indexprimaries != null  and indexprimaries != ''">indexPrimaries,</if>
+            <if test="doccount != null ">docCount,</if>
+            <if test="storesize != null ">storeSize,</if>
+            <if test="indextotal != null ">indexTotal,</if>
+            <if test="indexcurrent != null ">indexCurrent,</if>
+            <if test="gettotal != null ">getTotal,</if>
+            <if test="getcurrent != null ">getCurrent,</if>
+            <if test="querytotal != null ">queryTotal,</if>
+            <if test="querycurrent != null ">queryCurrent,</if>
+            <if test="scrolltotal != null ">scrollTotal,</if>
+            <if test="scrollcurrent != null ">scrollCurrent,</if>
+            <if test="mergescurrent != null ">mergesCurrent,</if>
+            <if test="mergersdocs != null ">mergersDocs,</if>
+            <if test="refreshtotal != null ">refreshTotal,</if>
+            <if test="flushtotal != null ">flushTotal,</if>
+            <if test="querycachesize != null ">queryCacheSize,</if>
+            <if test="querycachetotal != null ">queryCacheTotal,</if>
+            <if test="querycachehitcount != null ">queryCacheHitCount,</if>
+            <if test="querycachemisscount != null ">queryCacheMissCount,</if>
+            <if test="segmentscount != null ">segmentsCount,</if>
+            <if test="segmentsmemorysize != null ">segmentsMemorySize,</if>
+            <if test="segmentsmemorytermssize != null ">segmentsMemoryTermsSize,</if>
+            <if test="translogsize != null ">translogSize,</if>
+            <if test="inserttime != null ">insertTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clusterinfo != null  and clusterinfo != ''">#{clusterinfo},</if>
+            <if test="monitortype != null  and monitortype != ''">#{monitortype},</if>
+            <if test="indexname != null  and indexname != ''">#{indexname},</if>
+            <if test="indexprimaries != null  and indexprimaries != ''">#{indexprimaries},</if>
+            <if test="doccount != null ">#{doccount},</if>
+            <if test="storesize != null ">#{storesize},</if>
+            <if test="indextotal != null ">#{indextotal},</if>
+            <if test="indexcurrent != null ">#{indexcurrent},</if>
+            <if test="gettotal != null ">#{gettotal},</if>
+            <if test="getcurrent != null ">#{getcurrent},</if>
+            <if test="querytotal != null ">#{querytotal},</if>
+            <if test="querycurrent != null ">#{querycurrent},</if>
+            <if test="scrolltotal != null ">#{scrolltotal},</if>
+            <if test="scrollcurrent != null ">#{scrollcurrent},</if>
+            <if test="mergescurrent != null ">#{mergescurrent},</if>
+            <if test="mergersdocs != null ">#{mergersdocs},</if>
+            <if test="refreshtotal != null ">#{refreshtotal},</if>
+            <if test="flushtotal != null ">#{flushtotal},</if>
+            <if test="querycachesize != null ">#{querycachesize},</if>
+            <if test="querycachetotal != null ">#{querycachetotal},</if>
+            <if test="querycachehitcount != null ">#{querycachehitcount},</if>
+            <if test="querycachemisscount != null ">#{querycachemisscount},</if>
+            <if test="segmentscount != null ">#{segmentscount},</if>
+            <if test="segmentsmemorysize != null ">#{segmentsmemorysize},</if>
+            <if test="segmentsmemorytermssize != null ">#{segmentsmemorytermssize},</if>
+            <if test="translogsize != null ">#{translogsize},</if>
+            <if test="inserttime != null ">#{inserttime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMonitorAdminIndicesStats" parameterType="MonitorAdminIndicesStats">
+        update monitor_admin_indices_stats
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clusterinfo != null  and clusterinfo != ''">clusterInfo = #{clusterinfo},</if>
+            <if test="monitortype != null  and monitortype != ''">monitorType = #{monitortype},</if>
+            <if test="indexname != null  and indexname != ''">indexName = #{indexname},</if>
+            <if test="indexprimaries != null  and indexprimaries != ''">indexPrimaries = #{indexprimaries},</if>
+            <if test="doccount != null ">docCount = #{doccount},</if>
+            <if test="storesize != null ">storeSize = #{storesize},</if>
+            <if test="indextotal != null ">indexTotal = #{indextotal},</if>
+            <if test="indexcurrent != null ">indexCurrent = #{indexcurrent},</if>
+            <if test="gettotal != null ">getTotal = #{gettotal},</if>
+            <if test="getcurrent != null ">getCurrent = #{getcurrent},</if>
+            <if test="querytotal != null ">queryTotal = #{querytotal},</if>
+            <if test="querycurrent != null ">queryCurrent = #{querycurrent},</if>
+            <if test="scrolltotal != null ">scrollTotal = #{scrolltotal},</if>
+            <if test="scrollcurrent != null ">scrollCurrent = #{scrollcurrent},</if>
+            <if test="mergescurrent != null ">mergesCurrent = #{mergescurrent},</if>
+            <if test="mergersdocs != null ">mergersDocs = #{mergersdocs},</if>
+            <if test="refreshtotal != null ">refreshTotal = #{refreshtotal},</if>
+            <if test="flushtotal != null ">flushTotal = #{flushtotal},</if>
+            <if test="querycachesize != null ">queryCacheSize = #{querycachesize},</if>
+            <if test="querycachetotal != null ">queryCacheTotal = #{querycachetotal},</if>
+            <if test="querycachehitcount != null ">queryCacheHitCount = #{querycachehitcount},</if>
+            <if test="querycachemisscount != null ">queryCacheMissCount = #{querycachemisscount},</if>
+            <if test="segmentscount != null ">segmentsCount = #{segmentscount},</if>
+            <if test="segmentsmemorysize != null ">segmentsMemorySize = #{segmentsmemorysize},</if>
+            <if test="segmentsmemorytermssize != null ">segmentsMemoryTermsSize = #{segmentsmemorytermssize},</if>
+            <if test="translogsize != null ">translogSize = #{translogsize},</if>
+            <if test="inserttime != null ">insertTime = #{inserttime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMonitorAdminIndicesStatsById" parameterType="Long">
+        delete from monitor_admin_indices_stats where id = #{id}
+    </delete>
+
+    <delete id="deleteMonitorAdminIndicesStatsByIds" parameterType="String">
+        delete from monitor_admin_indices_stats where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

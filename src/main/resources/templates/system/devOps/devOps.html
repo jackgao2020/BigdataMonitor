@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <h1 style="text-align:center">问题：坐席反馈无派工网点和无派单状态</h1>
+    <h2 style="text-align:left">故障现象：</h2>
+    <img th:src="@{/img/devOps/tupian1.png}"width="1680px" height="120px" >
+    <h2 style="text-align:left">排查处理过程：</h2>
+    <h3 style="text-align:left">1.要求坐席提供工单号</h3>
+    <h3 style="text-align:left">2.登陆HIC系统，在“话务记录”中根据工单号查询到该用户信息找到手机号</h3>
+    <img th:src="@{/img/devOps/tupian2.png}" >
+    <h3 style="text-align:left">3.进入“业务受理”根据手机号查询，找到对应用户进入服务历史</h3>
+    <img th:src="@{/img/devOps/tupian3.png}" >
+    <h3 style="text-align:left">4.查看是信息单还是工单，是否缺少对应的工单号或者信息单号</h3>
+    <img th:src="@{/img/devOps/tupian4.png}" >
+    <h3 style="text-align:left">5.根据排查发现只有信息单编号，所以需要确认ES是否有对应的工单信息</h3>
+    <img th:src="@{/img/devOps/tupian5.png}" >
+    <h3 style="text-align:left">6.打开http://10.155.20.60:9100/  （内网环境或者挂VPN）链接到55ES</h3>
+    <img th:src="@{/img/devOps/tupian6.png}" >
+    <h3 style="text-align:left">7.基础查询-表名layout_workorder_main_info-关键字sourceid-工单号,查询。能查询到就说明有了，查不到需去本地存储确认表中是否有对应工单信息。</h3>
+    <img th:src="@{/img/devOps/tupian7.png}" >
+    <h3 style="text-align:left">8.登陆leccnew32数据库  查询leccdatacenter.wo_service_info中是否有对应工单信息</h3>
+    <h4 style="text-align:left">select * from lecc_datacenter.wo_service_info</h4>
+    <h4 style="text-align:left">where row_id ='YT21052507805479'</h4>
+    <img th:src="@{/img/devOps/tupian8.png}" >
+    <h3 style="text-align:left">没有则证明与大数据无关，需通知本地存储查看问题原因。有则排查是否传给我们了。</h3>
+    <h3 style="text-align:left">排查lxAPI是否接收到了</h3>
+    <h3 style="text-align:left">9.打开xshell或其他ssh链接软件</h3>
+    <h3 style="text-align:left">10.链接到10.155.20.11</h3>
+    <h3 style="text-align:left">11.进入路径 cd  /gaoxl/web</h3>
+    <h3 style="text-align:left">12.查询  是否有对应记录cat nohup.out |grep 工单号 </h3>
+    <h3 style="text-align:left">13.重复9-12步骤分别查看12、13、15服务器，传给我们则无问题。没传过来则通知本地存储。</h3>
+</div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+</body>
+</html>

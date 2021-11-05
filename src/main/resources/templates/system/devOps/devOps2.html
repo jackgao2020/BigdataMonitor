@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <h1 style="text-align:center">大屏AI处理量打开不显示</h1>
+    <h2 style="text-align:left">故障现象：驾驶舱AI处理量不显示具体信息</h2>
+    <img th:src="@{/img/devOps2/tupian1.png}" >
+    <h2 style="text-align:left">排查处理过程：</h2>
+    <h3 style="text-align:left">1.打开网页然后按F12进入开发者模式</h3>
+    <img th:src="@{/img/devOps2/tupian2.png}" >
+    <h3 style="text-align:left">2.查看接口是否变红或者status是否都是200</h3>
+    <h3 style="text-align:left">3.如果异常则需要登录10.155.20.13服务器  进入路径 cd /gaoxl/AIdaping/web/nohup.out</h3>
+    <h3 style="text-align:left">查看是否有错误日志。日志无问题,则前往数据库查看是否有数据。</h3>
+    <h3 style="text-align:left">4.登陆数据库10.155.5.15</h3>
+    <h3 style="text-align:left">5.表名HIC_PORTAL.AI_ANSWER_COUNT  打开后先查看是否有当天数据时间字段为</h3>
+    <h3 style="text-align:left">STARTDATE，没有当天数据需要找HIC反馈，有则进行下一步排查。</h3>
+    <h3 style="text-align:left">6.查看当天信息是否有时间STARTDATE、工贸BRANCHNAME字段是否缺失，缺失会导致无法按照工贸信息显示（现已更改逻辑，无工贸信息不会展示）</h3>
+    <h3 style="text-align:left">7.查看当天数据STATUS字段是否有“成功”，展示逻辑只展示status为“成功”的最新200</h3>
+    <img th:src="@{/img/devOps2/tupian3.png}" width="1680px" height="500px">
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+</body>
+</html>

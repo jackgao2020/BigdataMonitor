@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <h1 style="text-align:center">问题点：手机号查询不一致</h1>
+    <h2 style="text-align:left">现象：用手机号A查不到用户，但是用户信息上还展示了该手机号A</h2>
+    <img th:src="@{/img/devOps5/tupian1.png}" >
+    <img th:src="@{/img/devOps5/tupian2.png}" >
+    <h3 style="text-align:left">1、根本原因：用户表中mobile、homephone、officephone字段和账户表中不一致</h3>
+    <h3 style="text-align:left">2、排查思路：代码中的查询逻辑是根据用户表中mobile、homephone、officephone字段进行查询，但是HIC界面展示是以账户中的手机号进行展示，当两个表中的数据不一致时，就会导致查询和展示的手机号不一致</h3>
+    <h3 style="text-align:left">3、正常的存储ES表的数据：用户表和账户表是一对多的关系</h3>
+    <img th:src="@{/img/devOps5/tupian3.png}" >
+    <img th:src="@{/img/devOps5/tupian4.png}" >
+    <h2 style="text-align:left">4、排查步骤：</h2>
+    <h3 style="text-align:left">4.1 根据坐席提供工单号查询用户信息，找到用户ID即拿到用户的sourceid</h3>
+    <h3 style="text-align:left">4.2打开 55 ES,使用sourceid查看用户表layout_customer_base，然后获得customerid</h3>
+    <img th:src="@{/img/devOps5/tupian5.png}" >
+    <h3 style="text-align:left">4.3使用customerid查看账户表layout_account_info，查看两个表中的手机号是否一致，如不一致，查看该条用户数据的最后更新时间lastupdatetime</h3>
+    <img th:src="@{/img/devOps5/tupian6.png}" >
+    <h3 style="text-align:left">4.4如果最后更新时间在新大数据平台上线之前（2019年10月份），就是历史数据问题</h3>
+    <h3 style="text-align:left">4.5如果最后更新时间在新大数据平台上线之后，去SAAS查看该条用户信息的日志（根据inserttime查询某天日志）</h3>
+    <h2 style="text-align:left">具体操作：</h2>
+    <h3 style="text-align:left">4.5.1 打开xshell或其他ssh链接软件链接到10.155.20.11</h3>
+    <h3 style="text-align:left">4.5.2进入路径 cd lexin/saas/saas-service-impl-0.0.1-SNAPSHOT/logs/</h3>
+    <h3 style="text-align:left">4.5.3 cat 文件名|grep 工单号或者手机号</h3>
+    <h3 style="text-align:left">4.5.4 依次查看11、12、13、15的saas日志 </h3>
+    <h3 style="text-align:left">4.6日志中用户信息的手机号字段和账户信息不一致时，通知hic进行排查</h3>
+    <h3 style="text-align:left">4.7、日志正常的话，大数据进行排查 </h3>
+    <h2 style="text-align:left">5、解决方案：</h2>
+    <h3 style="text-align:left">5.1、如果是历史数据问题，通知坐席在hic界面修改用户重新保存一下用户</h3>
+    <h3 style="text-align:left">5.2、如果是hic的问题，让hic找到问题原因后重新推一次数据 </h3>
+    <h3 style="text-align:left">5.3、如果是大数据本身的原因（目前还没遇到），找到问题造成的原因后再制定具体的解决方案 </h3>
+        <script th:src="@{/js/jquery.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+</body>
+</html>

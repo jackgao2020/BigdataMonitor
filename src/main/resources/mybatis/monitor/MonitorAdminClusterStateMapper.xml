@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.project.bigdata.mapper.MonitorAdminClusterStateMapper">
+    
+    <resultMap type="MonitorAdminClusterState" id="MonitorAdminClusterStateResult">
+        <result property="pkId"    column="pk_id"    />
+        <result property="clusterInfo"    column="cluster_info"    />
+        <result property="clusterName"    column="cluster_name"    />
+        <result property="providedName"    column="provided_name"    />
+        <result property="creationDate"    column="creation_date"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="numberOfShards"    column="number_of_shards"    />
+        <result property="numberOfReplicas"    column="number_of_replicas"    />
+        <result property="refreshInterval"    column="refresh_interval"    />
+        <result property="insertTime"    column="insert_time"    />
+    </resultMap>
+
+    <sql id="selectMonitorAdminClusterStateVo">
+        select pk_id, cluster_info, cluster_name, provided_name, creation_date, uuid, number_of_shards, number_of_replicas, refresh_interval, insert_time from monitor_admin_cluster_state
+    </sql>
+
+    <select id="selectMonitorAdminClusterStateList" parameterType="MonitorAdminClusterState" resultMap="MonitorAdminClusterStateResult">
+        <include refid="selectMonitorAdminClusterStateVo"/>
+        <where>  
+            <if test="clusterInfo != null  and clusterInfo != ''"> and cluster_info = #{clusterInfo}</if>
+            <if test="providedName != null  and providedName != ''"> and provided_name like concat('%', #{providedName}, '%')</if>
+        </where>
+    </select>
+    <select id="countMonitorAdminClusterState" parameterType="MonitorAdminClusterState" resultType="java.lang.Integer">
+        SELECT COUNT(0) FROM monitor_admin_cluster_state
+        <where>
+            <if test="clusterInfo != null  and clusterInfo != ''"> and cluster_info = #{clusterInfo}</if>
+            <if test="providedName != null  and providedName != ''"> and provided_name like concat('%', #{providedName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectMonitorAdminClusterStateById" parameterType="Long" resultMap="MonitorAdminClusterStateResult">
+        <include refid="selectMonitorAdminClusterStateVo"/>
+        where pk_id = #{pkId}
+    </select>
+        
+    <insert id="insertMonitorAdminClusterState" parameterType="MonitorAdminClusterState" useGeneratedKeys="true" keyProperty="pkId">
+        insert into monitor_admin_cluster_state
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clusterInfo != null  and clusterInfo != ''">cluster_info,</if>
+            <if test="clusterName != null  and clusterName != ''">cluster_name,</if>
+            <if test="providedName != null  and providedName != ''">provided_name,</if>
+            <if test="creationDate != null  and creationDate != ''">creation_date,</if>
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="numberOfShards != null  and numberOfShards != ''">number_of_shards,</if>
+            <if test="numberOfReplicas != null  and numberOfReplicas != ''">number_of_replicas,</if>
+            <if test="refreshInterval != null  and refreshInterval != ''">refresh_interval,</if>
+            <if test="insertTime != null ">insert_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clusterInfo != null  and clusterInfo != ''">#{clusterInfo},</if>
+            <if test="clusterName != null  and clusterName != ''">#{clusterName},</if>
+            <if test="providedName != null  and providedName != ''">#{providedName},</if>
+            <if test="creationDate != null  and creationDate != ''">#{creationDate},</if>
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="numberOfShards != null  and numberOfShards != ''">#{numberOfShards},</if>
+            <if test="numberOfReplicas != null  and numberOfReplicas != ''">#{numberOfReplicas},</if>
+            <if test="refreshInterval != null  and refreshInterval != ''">#{refreshInterval},</if>
+            <if test="insertTime != null ">#{insertTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMonitorAdminClusterState" parameterType="MonitorAdminClusterState">
+        update monitor_admin_cluster_state
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clusterInfo != null  and clusterInfo != ''">cluster_info = #{clusterInfo},</if>
+            <if test="clusterName != null  and clusterName != ''">cluster_name = #{clusterName},</if>
+            <if test="providedName != null  and providedName != ''">provided_name = #{providedName},</if>
+            <if test="creationDate != null  and creationDate != ''">creation_date = #{creationDate},</if>
+            <if test="uuid != null  and uuid != ''">uuid = #{uuid},</if>
+            <if test="numberOfShards != null  and numberOfShards != ''">number_of_shards = #{numberOfShards},</if>
+            <if test="numberOfReplicas != null  and numberOfReplicas != ''">number_of_replicas = #{numberOfReplicas},</if>
+            <if test="refreshInterval != null  and refreshInterval != ''">refresh_interval = #{refreshInterval},</if>
+            <if test="insertTime != null ">insert_time = #{insertTime},</if>
+        </trim>
+        where pk_id = #{pkId}
+    </update>
+
+    <delete id="deleteMonitorAdminClusterStateById" parameterType="Long">
+        delete from monitor_admin_cluster_state where pk_id = #{pkId}
+    </delete>
+
+    <delete id="deleteMonitorAdminClusterStateByIds" parameterType="String">
+        delete from monitor_admin_cluster_state where pk_id in 
+        <foreach item="pkId" collection="array" open="(" separator="," close=")">
+            #{pkId}
+        </foreach>
+    </delete>
+    
+</mapper>

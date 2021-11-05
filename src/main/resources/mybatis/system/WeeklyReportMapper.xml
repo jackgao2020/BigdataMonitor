@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.project.system.report.mapper.WeeklyReportMapper">
+    
+    <resultMap type="WeeklyReport" id="WeeklyReportResult">
+        <result property="resolvedState"    column="resolved_state"    />
+        <result property="needCoordinator"    column="need_coordinator"    />
+        <result property="no"    column="no"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="classify"    column="classify"    />
+        <result property="phenomenon"    column="phenomenon"    />
+        <result property="quesetionName"    column="quesetion_name"    />
+        <result property="workplace"    column="workplace"    />
+        <result property="cause"    column="cause"    />
+        <result property="failureCauseSubitem"    column="failure_cause_subitem"    />
+        <result property="volume"    column="volume"    />
+        <result property="treatmentMeasures"    column="treatment_measures"    />
+        <result property="optimizationItem"    column="optimization_item"    />
+        <result property="isBreak"    column="is_break"    />
+        <result property="seat"    column="seat"    />
+        <result property="contactPerson"    column="contact_person"    />
+        <result property="stopDate"    column="stop_date"    />
+        <result property="stopTime"    column="stop_time"    />
+        <result property="relevanceNo"    column="relevance_no"    />
+    </resultMap>
+
+    <sql id="selectWeeklyReportVo">
+        select resolved_state, need_coordinator, no, start_date, start_time, classify, phenomenon, quesetion_name, workplace, cause, failure_cause_subitem, volume, treatment_measures, optimization_item, is_break, seat, contact_person, stop_date, stop_time, relevance_no from weekly_report
+    </sql>
+
+    <select id="selectWeeklyReportList" parameterType="WeeklyReport" resultMap="WeeklyReportResult">
+        <include refid="selectWeeklyReportVo"/>
+        <where>  
+            <if test="resolvedState != null  and resolvedState != ''"> and resolved_state = #{resolvedState}</if>
+            <if test="needCoordinator != null  and needCoordinator != ''"> and need_coordinator = #{needCoordinator}</if>
+            <if test="startDate != null "> and start_date >= #{startDate}</if>
+            <if test="startTime != null  and startTime != ''"> and start_time = #{startTime}</if>
+            <if test="classify != null  and classify != ''"> and classify = #{classify}</if>
+            <if test="phenomenon != null  and phenomenon != ''"> and phenomenon = #{phenomenon}</if>
+            <if test="quesetionName != null  and quesetionName != ''"> and quesetion_name like concat('%', #{quesetionName}, '%')</if>
+            <if test="workplace != null  and workplace != ''"> and workplace = #{workplace}</if>
+            <if test="cause != null  and cause != ''"> and cause = #{cause}</if>
+            <if test="failureCauseSubitem != null  and failureCauseSubitem != ''"> and failure_cause_subitem = #{failureCauseSubitem}</if>
+            <if test="volume != null  and volume != ''"> and volume = #{volume}</if>
+            <if test="treatmentMeasures != null  and treatmentMeasures != ''"> and treatment_measures = #{treatmentMeasures}</if>
+            <if test="optimizationItem != null  and optimizationItem != ''"> and optimization_item = #{optimizationItem}</if>
+            <if test="isBreak != null  and isBreak != ''"> and is_break = #{isBreak}</if>
+            <if test="seat != null  and seat != ''"> and seat = #{seat}</if>
+            <if test="contactPerson != null  and contactPerson != ''"> and contact_person = #{contactPerson}</if>
+            <if test="stopDate != null "> and stop_date  <![CDATA[ <  ]]> #{stopDate}</if>
+            <if test="stopTime != null  and stopTime != ''"> and stop_time = #{stopTime}</if>
+            <if test="relevanceNo != null "> and relevance_no = #{relevanceNo}</if>
+        </where>
+        order by start_date DESC
+    </select>
+    
+    <select id="selectWeeklyReportById" parameterType="Long" resultMap="WeeklyReportResult">
+        <include refid="selectWeeklyReportVo"/>
+        where no = #{no}
+    </select>
+        
+    <insert id="insertWeeklyReport" parameterType="WeeklyReport">
+        insert into weekly_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resolvedState != null  and resolvedState != ''">resolved_state,</if>
+            <if test="needCoordinator != null  and needCoordinator != ''">need_coordinator,</if>
+            <if test="no != null ">no,</if>
+            <if test="startDate != null ">start_date,</if>
+            <if test="startTime != null  and startTime != ''">start_time,</if>
+            <if test="classify != null  and classify != ''">classify,</if>
+            <if test="phenomenon != null  and phenomenon != ''">phenomenon,</if>
+            <if test="quesetionName != null  and quesetionName != ''">quesetion_name,</if>
+            <if test="workplace != null  and workplace != ''">workplace,</if>
+            <if test="cause != null  and cause != ''">cause,</if>
+            <if test="failureCauseSubitem != null  and failureCauseSubitem != ''">failure_cause_subitem,</if>
+            <if test="volume != null  and volume != ''">volume,</if>
+            <if test="treatmentMeasures != null  and treatmentMeasures != ''">treatment_measures,</if>
+            <if test="optimizationItem != null  and optimizationItem != ''">optimization_item,</if>
+            <if test="isBreak != null  and isBreak != ''">is_break,</if>
+            <if test="seat != null  and seat != ''">seat,</if>
+            <if test="contactPerson != null  and contactPerson != ''">contact_person,</if>
+            <if test="stopDate != null ">stop_date,</if>
+            <if test="stopTime != null  and stopTime != ''">stop_time,</if>
+            <if test="relevanceNo != null ">relevance_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resolvedState != null  and resolvedState != ''">#{resolvedState},</if>
+            <if test="needCoordinator != null  and needCoordinator != ''">#{needCoordinator},</if>
+            <if test="no != null ">#{no},</if>
+            <if test="startDate != null ">#{startDate},</if>
+            <if test="startTime != null  and startTime != ''">#{startTime},</if>
+            <if test="classify != null  and classify != ''">#{classify},</if>
+            <if test="phenomenon != null  and phenomenon != ''">#{phenomenon},</if>
+            <if test="quesetionName != null  and quesetionName != ''">#{quesetionName},</if>
+            <if test="workplace != null  and workplace != ''">#{workplace},</if>
+            <if test="cause != null  and cause != ''">#{cause},</if>
+            <if test="failureCauseSubitem != null  and failureCauseSubitem != ''">#{failureCauseSubitem},</if>
+            <if test="volume != null  and volume != ''">#{volume},</if>
+            <if test="treatmentMeasures != null  and treatmentMeasures != ''">#{treatmentMeasures},</if>
+            <if test="optimizationItem != null  and optimizationItem != ''">#{optimizationItem},</if>
+            <if test="isBreak != null  and isBreak != ''">#{isBreak},</if>
+            <if test="seat != null  and seat != ''">#{seat},</if>
+            <if test="contactPerson != null  and contactPerson != ''">#{contactPerson},</if>
+            <if test="stopDate != null ">#{stopDate},</if>
+            <if test="stopTime != null  and stopTime != ''">#{stopTime},</if>
+            <if test="relevanceNo != null ">#{relevanceNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeeklyReport" parameterType="WeeklyReport">
+        update weekly_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="resolvedState != null  and resolvedState != ''">resolved_state = #{resolvedState},</if>
+            <if test="needCoordinator != null  and needCoordinator != ''">need_coordinator = #{needCoordinator},</if>
+            <if test="startDate != null ">start_date = #{startDate},</if>
+            <if test="startTime != null  and startTime != ''">start_time = #{startTime},</if>
+            <if test="classify != null  and classify != ''">classify = #{classify},</if>
+            <if test="phenomenon != null  and phenomenon != ''">phenomenon = #{phenomenon},</if>
+            <if test="quesetionName != null  and quesetionName != ''">quesetion_name = #{quesetionName},</if>
+            <if test="workplace != null  and workplace != ''">workplace = #{workplace},</if>
+            <if test="cause != null  and cause != ''">cause = #{cause},</if>
+            <if test="failureCauseSubitem != null  and failureCauseSubitem != ''">failure_cause_subitem = #{failureCauseSubitem},</if>
+            <if test="volume != null  and volume != ''">volume = #{volume},</if>
+            <if test="treatmentMeasures != null  and treatmentMeasures != ''">treatment_measures = #{treatmentMeasures},</if>
+            <if test="optimizationItem != null  and optimizationItem != ''">optimization_item = #{optimizationItem},</if>
+            <if test="isBreak != null  and isBreak != ''">is_break = #{isBreak},</if>
+            <if test="seat != null  and seat != ''">seat = #{seat},</if>
+            <if test="contactPerson != null  and contactPerson != ''">contact_person = #{contactPerson},</if>
+            <if test="stopDate != null ">stop_date = #{stopDate},</if>
+            <if test="stopTime != null  and stopTime != ''">stop_time = #{stopTime},</if>
+            <if test="relevanceNo != null ">relevance_no = #{relevanceNo},</if>
+        </trim>
+        where no = #{no}
+    </update>
+
+    <delete id="deleteWeeklyReportById" parameterType="Long">
+        delete from weekly_report where no = #{no}
+    </delete>
+
+    <delete id="deleteWeeklyReportByIds" parameterType="String">
+        delete from weekly_report where no in 
+        <foreach item="no" collection="array" open="(" separator="," close=")">
+            #{no}
+        </foreach>
+    </delete>
+    
+</mapper>

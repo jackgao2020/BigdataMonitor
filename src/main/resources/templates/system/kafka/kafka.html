@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('【请填写功能名称】列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>集群名称：</label>
+                                <input type="text" name="cluster"/>
+                            </li>
+                            <li>
+                                <label>topic名称：</label>
+                                <input type="text" name="topic"/>
+                            </li>
+                            <li>
+                                <label>入库时间：</label>
+                                <input type="text" name="insertdate"/>
+                            </li>
+                            <li>
+                                <label>分区的数量：</label>
+                                <input type="text" name="partitionssize"/>
+                            </li>
+                            <li>
+                                <label>broker的数量：</label>
+                                <input type="text" name="brokerssize"/>
+                            </li>
+                            <li>
+                                <label>每秒接收信息量：</label>
+                                <input type="text" name="permessagesize"/>
+                            </li>
+                            <li>
+                                <label>kafka接收消息的总量：</label>
+                                <input type="text" name="allmessagesize"/>
+                            </li>
+                            <li>
+                                <label>kafka目前保存消息的总量-early：</label>
+                                <input type="text" name="curmessagesize"/>
+                            </li>
+                            <!--<li>-->
+                                <!--<label>最近一次接收消息最大分区的量：</label>-->
+                                <!--<input type="text" name="maxlatestoffset"/>-->
+                            <!--</li>-->
+                            <li>
+                                <label>最近一次消费信息的平均值：</label>
+                                <input type="text" name="avglatestoffset"/>
+                            </li>
+                            <!--<li>-->
+                                <!--<label>最近一次接收消息最少的分区的量：</label>-->
+                                <!--<input type="text" name="minlatestoffset"/>-->
+                            <!--</li>-->
+                            <li>
+                                <label>kafka最早的最大分区的量：</label>
+                                <input type="text" name="maxearliestoffset"/>
+                            </li>
+                            <li>
+                                <label>kafka最早的分区的平均量：</label>
+                                <input type="text" name="avgearliestoffset"/>
+                            </li>
+                            <li>
+                                <label>kafka最早分区的最小消息量：</label>
+                                <input type="text" name="minearliestoffset"/>
+                            </li>
+
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:kafka:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:kafka:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:kafka:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:kafka:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:kafka:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:kafka:remove')}]];
+        var prefix = ctx + "system/kafka";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "【请填写功能名称】",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id', 
+                    title: '入库时间',
+                    visible: false
+                },
+                {
+                    field: 'cluster', 
+                    title: '集群名称'
+                },
+                {
+                    field: 'topic', 
+                    title: 'topic名称'
+                },
+                    {
+                        field: 'insertdate',
+                        title: '入库时间'
+                    },
+                {
+                    field: 'partitionssize', 
+                    title: '分区的数量'
+                },
+                {
+                    field: 'brokerssize', 
+                    title: 'broker的数量'
+                },
+                {
+                    field: 'permessagesize', 
+                    title: '每秒接收信息量'
+                },
+                {
+                    field: 'allmessagesize', 
+                    title: 'kafka接收消息的总量'
+                },
+                {
+                    field: 'curmessagesize', 
+                    title: 'kafka目前保存消息的总量-early'
+                },
+                // {
+                //     field: 'latestoffset',
+                //     title: '最近一次各个分区的offset'
+                // },
+                // {
+                //     field: 'maxlatestoffset',
+                //     title: '最近一次接收消息最大分区的量'
+                // },
+                {
+                    field: 'avglatestoffset', 
+                    title: '最近一次消费信息的平均值'
+                },
+                {
+                    field: 'minlatestoffset', 
+                    title: '最近一次接收消息最少的分区的量'
+                },
+                // {
+                //     field: 'earliestoffset',
+                //     title: 'kafka最早保存的各个分区的offset'
+                // },
+                {
+                    field: 'maxearliestoffset', 
+                    title: 'kafka最早的最大分区的量'
+                },
+                {
+                    field: 'avgearliestoffset', 
+                    title: 'kafka最早的分区的平均量'
+                },
+                {
+                    field: 'minearliestoffset', 
+                    title: 'kafka最早分区的最小消息量'
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

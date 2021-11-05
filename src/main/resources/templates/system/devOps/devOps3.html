@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <h1 style="text-align:center">BigdataMonitor 开发手册-展示表数据</h1>
+    <h2 style="text-align:left">一、svn获取BigdataMonitor项目包</h2>
+    <h3 style="text-align:left">1.首先登陆svn路径将项目代码检出</h3>
+    <h4 style="text-align:left">svn://10.155.20.101/乐信二期/trunk/运维监控/BigdataMonitor</h4>
+    <h3 style="text-align:left">2.本地启动项目 打开浏览器，进入本地页面</h3>
+    <h4 style="text-align:left">本地地址 http://localhost:8686/login</h4>
+    <h4 style="text-align:left">账号 admin 密码 123456</h4>
+    <h2 style="text-align:left">二、数据库建表</h2>
+    <h3 style="text-align:left">3.在数据库建好表--10.155.20.61数据库 monitor 下建立对应表</h3>
+    <img th:src="@{/img/devOps3/tupian1.png}" >
+    <h2 style="text-align:left">三、代码生成</h2>
+    <h3 style="text-align:left">4.代码生成 点击系统工具-代码生成-导入刚建的表</h3>
+    <img th:src="@{/img/devOps3/tupian2.png}" width="1680px" height="500px">
+    <h3 style="text-align:left">5.找到刚刚新建的表，导入</h3>
+    <img th:src="@{/img/devOps3/tupian3.png}" >
+    <h3 style="text-align:left">6.找到刚刚导入的表  选择编辑</h3>
+    <img th:src="@{/img/devOps3/tupian4.png}"width="1680px" height="400px" >
+    <h3 style="text-align:left">7.根据实际情况选择想要的增删改查等功能  然后点击最下方保存按钮</h3>
+    <img th:src="@{/img/devOps3/tupian5.png}"width="1680px" height="500px" >
+    <h3 style="text-align:left">8.点击生成代码，生成后会下载在本地路径</h3>
+    <img th:src="@{/img/devOps3/tupian6.png}" >
+    <h3 style="text-align:left">9.将下载到本地的代码解压，然后按照对应路径复制拷贝到</h3>
+    <h3 style="text-align:left">BigdataMonitor项目下对应路径然后在项目中启动。</h3>
+    <h3 style="text-align:left">10.启动后进入本地页面， 然后进入系统管理-菜单管理。</h3>
+    <h4 style="text-align:left">本地地址 http://localhost:8686/login  然后进入系统管理，然后打开菜单管理，进入开始填写信息，最后确定，然后刷新界面就可以显示了。</h4>
+    <img th:src="@{/img/devOps3/tupian7.png}" >
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+</body>
+</html>

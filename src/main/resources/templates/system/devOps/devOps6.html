@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <h1 style="text-align:center">发版过程手册</h1>
+    <h3 style="text-align:left">1.首先在idea   Maven中执行clean命令、再执行package命令 </h3>
+    <img th:src="@{/img/devOps6/tupian1.png}" >
+    <h3 style="text-align:left">2.然后找到项目文件下的target目录找到打包的文件BigdataMonitor.jar，修改文件名为BigdataMonito-4.2.0.jar</h3>
+    <img th:src="@{/img/devOps6/tupian2.png}" >
+    <h3 style="text-align:left">3.登陆winscp等软件可以访问服务器文件夹的软件，链接10.155.20.14</h3>
+    <h3 style="text-align:left">4.进入路径 /gaoxl/web文件夹，找到BigdataMonitor-4.2.0.jar文件，修改文件名为BigdataMonito-4.2.0.jar.backup备份，将上一步的文件复制进来。</h3>
+    <h3 style="text-align:left">5.登陆xshell 连接到10.155.20.14服务器，输入命令cd /gaoxl/web   进入到对应的路径</h3>
+    <h3 style="text-align:left">6.运行脚本： ./bigdataMonitor.sh stop  停掉应用</h3>
+    <h3 style="text-align:left">7.然后运行脚本：./bigdataMonitor.sh  start  启动应用</h3>
+    <h3 style="text-align:left">8.登陆网址10.155.20.14:8686验证下程序是否正常</h3>
+    <img th:src="@{/img/devOps6/tupian3.png}" >
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+</body>
+</html>

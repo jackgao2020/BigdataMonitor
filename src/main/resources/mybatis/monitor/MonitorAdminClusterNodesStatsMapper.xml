@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.project.bigdata.mapper.MonitorAdminClusterNodesStatsMapper">
+    
+    <resultMap type="MonitorAdminClusterNodesStats" id="MonitorAdminClusterNodesStatsResult">
+        <result property="pkId"    column="pk_id"    />
+        <result property="clusterInfo"    column="cluster_info"    />
+        <result property="clusterName"    column="cluster_name"    />
+        <result property="nodesTotal"    column="nodes_total"    />
+        <result property="nodesIp"    column="nodes_ip"    />
+        <result property="nodesRoles"    column="nodes_roles"    />
+        <result property="monitorType"    column="monitor_type"    />
+        <result property="indicesDocCount"    column="indices_doc_count"    />
+        <result property="indicesStoreSize"    column="indices_store_size"    />
+        <result property="indicesIndexTotal"    column="indices_index_total"    />
+        <result property="indicesIndexCurrent"    column="indices_index_current"    />
+        <result property="indicesGetTotal"    column="indices_get_total"    />
+        <result property="indicesGetCurrent"    column="indices_get_current"    />
+        <result property="indicesQueryTotal"    column="indices_query_total"    />
+        <result property="indicesQueryCurrent"    column="indices_query_current"    />
+        <result property="indicesScrollTotal"    column="indices_scroll_total"    />
+        <result property="indicesScrollCurrent"    column="indices_scroll_current"    />
+        <result property="indicesMergesCurrent"    column="indices_merges_current"    />
+        <result property="indicesMergersDocs"    column="indices_mergers_docs"    />
+        <result property="indicesRefreshTotal"    column="indices_refresh_total"    />
+        <result property="indicesFlushTotal"    column="indices_flush_total"    />
+        <result property="indicesQueryCacheSize"    column="indices_query_cache_size"    />
+        <result property="indicesQueryCacheTotal"    column="indices_query_cache_total"    />
+        <result property="indicesQueryCacheHitCount"    column="indices_query_cache_hit_count"    />
+        <result property="indicesQueryCacheMissCount"    column="indices_query_cache_miss_count"    />
+        <result property="indicesSegmentsCount"    column="indices_segments_count"    />
+        <result property="indicesSegmentsMemorySize"    column="indices_segments_memory_size"    />
+        <result property="indicesSegmentsMemoryTermsSize"    column="indices_segments_memory_terms_size"    />
+        <result property="indicesTranslogSize"    column="indices_translog_size"    />
+        <result property="osCpuPercent"    column="os_cpu_percent"    />
+        <result property="osMemTotal"    column="os_mem_total"    />
+        <result property="osMemFree"    column="os_mem_free"    />
+        <result property="osMemUsed"    column="os_mem_used"    />
+        <result property="jvmHeapUsed"    column="jvm_heap_used"    />
+        <result property="jvmHeapMax"    column="jvm_heap_max"    />
+        <result property="threadsCount"    column="threads_count"    />
+        <result property="threadsPeakCount"    column="threads_peak_count"    />
+        <result property="gcYoungCollectionCount"    column="gc_young_collection_count"    />
+        <result property="gcOldCollectionCount"    column="gc_old_collection_count"    />
+        <result property="gcClassesTotalLoadedCount"    column="gc_classes_total_loaded_count"    />
+        <result property="fsTotal"    column="fs_total"    />
+        <result property="fsFree"    column="fs_free"    />
+        <result property="transportServerOpen"    column="transport_server_open"    />
+        <result property="httpCurrentOpen"    column="http_current_open"    />
+        <result property="scriptCompilations"    column="script_compilations"    />
+        <result property="insertTime"    column="insert_time"    />
+    </resultMap>
+
+    <sql id="selectMonitorAdminClusterNodesStatsVo">
+        select pk_id, cluster_info, cluster_name, nodes_total, nodes_ip, nodes_roles, monitor_type, indices_doc_count, indices_store_size, indices_index_total, indices_index_current, indices_get_total, indices_get_current, indices_query_total, indices_query_current, indices_scroll_total, indices_scroll_current, indices_merges_current, indices_mergers_docs, indices_refresh_total, indices_flush_total, indices_query_cache_size, indices_query_cache_total, indices_query_cache_hit_count, indices_query_cache_miss_count, indices_segments_count, indices_segments_memory_size, indices_segments_memory_terms_size, indices_translog_size, os_cpu_percent, os_mem_total, os_mem_free, os_mem_used, jvm_heap_used, jvm_heap_max, threads_count, threads_peak_count, gc_young_collection_count, gc_old_collection_count, gc_classes_total_loaded_count, fs_total, fs_free, transport_server_open, http_current_open, script_compilations, insert_time from monitor_admin_cluster_nodes_stats
+    </sql>
+
+    <select id="selectMonitorAdminClusterNodesStatsList" parameterType="MonitorAdminClusterNodesStats" resultMap="MonitorAdminClusterNodesStatsResult">
+        <include refid="selectMonitorAdminClusterNodesStatsVo"/>
+        <where>  
+            <if test="clusterInfo != null  and clusterInfo != ''"> and cluster_info = #{clusterInfo}</if>
+            <if test="nodesIp != null  and nodesIp != ''"> and nodes_ip like concat('%', #{nodesIp}, '%')</if>
+            <if test="nodesRoles != null  and nodesRoles != ''"> and nodes_roles = #{nodesRoles}</if>
+        </where>
+    </select>
+    
+    <select id="selectMonitorAdminClusterNodesStatsById" parameterType="Long" resultMap="MonitorAdminClusterNodesStatsResult">
+        <include refid="selectMonitorAdminClusterNodesStatsVo"/>
+        where pk_id = #{pkId}
+    </select>
+        
+    <insert id="insertMonitorAdminClusterNodesStats" parameterType="MonitorAdminClusterNodesStats" useGeneratedKeys="true" keyProperty="pkId">
+        insert into monitor_admin_cluster_nodes_stats
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clusterInfo != null  and clusterInfo != ''">cluster_info,</if>
+            <if test="clusterName != null  and clusterName != ''">cluster_name,</if>
+            <if test="nodesTotal != null ">nodes_total,</if>
+            <if test="nodesIp != null  and nodesIp != ''">nodes_ip,</if>
+            <if test="nodesRoles != null  and nodesRoles != ''">nodes_roles,</if>
+            <if test="monitorType != null  and monitorType != ''">monitor_type,</if>
+            <if test="indicesDocCount != null ">indices_doc_count,</if>
+            <if test="indicesStoreSize != null ">indices_store_size,</if>
+            <if test="indicesIndexTotal != null ">indices_index_total,</if>
+            <if test="indicesIndexCurrent != null ">indices_index_current,</if>
+            <if test="indicesGetTotal != null ">indices_get_total,</if>
+            <if test="indicesGetCurrent != null ">indices_get_current,</if>
+            <if test="indicesQueryTotal != null ">indices_query_total,</if>
+            <if test="indicesQueryCurrent != null ">indices_query_current,</if>
+            <if test="indicesScrollTotal != null ">indices_scroll_total,</if>
+            <if test="indicesScrollCurrent != null ">indices_scroll_current,</if>
+            <if test="indicesMergesCurrent != null ">indices_merges_current,</if>
+            <if test="indicesMergersDocs != null ">indices_mergers_docs,</if>
+            <if test="indicesRefreshTotal != null ">indices_refresh_total,</if>
+            <if test="indicesFlushTotal != null ">indices_flush_total,</if>
+            <if test="indicesQueryCacheSize != null ">indices_query_cache_size,</if>
+            <if test="indicesQueryCacheTotal != null ">indices_query_cache_total,</if>
+            <if test="indicesQueryCacheHitCount != null ">indices_query_cache_hit_count,</if>
+            <if test="indicesQueryCacheMissCount != null ">indices_query_cache_miss_count,</if>
+            <if test="indicesSegmentsCount != null ">indices_segments_count,</if>
+            <if test="indicesSegmentsMemorySize != null ">indices_segments_memory_size,</if>
+            <if test="indicesSegmentsMemoryTermsSize != null ">indices_segments_memory_terms_size,</if>
+            <if test="indicesTranslogSize != null ">indices_translog_size,</if>
+            <if test="osCpuPercent != null ">os_cpu_percent,</if>
+            <if test="osMemTotal != null ">os_mem_total,</if>
+            <if test="osMemFree != null ">os_mem_free,</if>
+            <if test="osMemUsed != null ">os_mem_used,</if>
+            <if test="jvmHeapUsed != null ">jvm_heap_used,</if>
+            <if test="jvmHeapMax != null ">jvm_heap_max,</if>
+            <if test="threadsCount != null ">threads_count,</if>
+            <if test="threadsPeakCount != null ">threads_peak_count,</if>
+            <if test="gcYoungCollectionCount != null ">gc_young_collection_count,</if>
+            <if test="gcOldCollectionCount != null ">gc_old_collection_count,</if>
+            <if test="gcClassesTotalLoadedCount != null ">gc_classes_total_loaded_count,</if>
+            <if test="fsTotal != null ">fs_total,</if>
+            <if test="fsFree != null ">fs_free,</if>
+            <if test="transportServerOpen != null ">transport_server_open,</if>
+            <if test="httpCurrentOpen != null ">http_current_open,</if>
+            <if test="scriptCompilations != null ">script_compilations,</if>
+            <if test="insertTime != null ">insert_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clusterInfo != null  and clusterInfo != ''">#{clusterInfo},</if>
+            <if test="clusterName != null  and clusterName != ''">#{clusterName},</if>
+            <if test="nodesTotal != null ">#{nodesTotal},</if>
+            <if test="nodesIp != null  and nodesIp != ''">#{nodesIp},</if>
+            <if test="nodesRoles != null  and nodesRoles != ''">#{nodesRoles},</if>
+            <if test="monitorType != null  and monitorType != ''">#{monitorType},</if>
+            <if test="indicesDocCount != null ">#{indicesDocCount},</if>
+            <if test="indicesStoreSize != null ">#{indicesStoreSize},</if>
+            <if test="indicesIndexTotal != null ">#{indicesIndexTotal},</if>
+            <if test="indicesIndexCurrent != null ">#{indicesIndexCurrent},</if>
+            <if test="indicesGetTotal != null ">#{indicesGetTotal},</if>
+            <if test="indicesGetCurrent != null ">#{indicesGetCurrent},</if>
+            <if test="indicesQueryTotal != null ">#{indicesQueryTotal},</if>
+            <if test="indicesQueryCurrent != null ">#{indicesQueryCurrent},</if>
+            <if test="indicesScrollTotal != null ">#{indicesScrollTotal},</if>
+            <if test="indicesScrollCurrent != null ">#{indicesScrollCurrent},</if>
+            <if test="indicesMergesCurrent != null ">#{indicesMergesCurrent},</if>
+            <if test="indicesMergersDocs != null ">#{indicesMergersDocs},</if>
+            <if test="indicesRefreshTotal != null ">#{indicesRefreshTotal},</if>
+            <if test="indicesFlushTotal != null ">#{indicesFlushTotal},</if>
+            <if test="indicesQueryCacheSize != null ">#{indicesQueryCacheSize},</if>
+            <if test="indicesQueryCacheTotal != null ">#{indicesQueryCacheTotal},</if>
+            <if test="indicesQueryCacheHitCount != null ">#{indicesQueryCacheHitCount},</if>
+            <if test="indicesQueryCacheMissCount != null ">#{indicesQueryCacheMissCount},</if>
+            <if test="indicesSegmentsCount != null ">#{indicesSegmentsCount},</if>
+            <if test="indicesSegmentsMemorySize != null ">#{indicesSegmentsMemorySize},</if>
+            <if test="indicesSegmentsMemoryTermsSize != null ">#{indicesSegmentsMemoryTermsSize},</if>
+            <if test="indicesTranslogSize != null ">#{indicesTranslogSize},</if>
+            <if test="osCpuPercent != null ">#{osCpuPercent},</if>
+            <if test="osMemTotal != null ">#{osMemTotal},</if>
+            <if test="osMemFree != null ">#{osMemFree},</if>
+            <if test="osMemUsed != null ">#{osMemUsed},</if>
+            <if test="jvmHeapUsed != null ">#{jvmHeapUsed},</if>
+            <if test="jvmHeapMax != null ">#{jvmHeapMax},</if>
+            <if test="threadsCount != null ">#{threadsCount},</if>
+            <if test="threadsPeakCount != null ">#{threadsPeakCount},</if>
+            <if test="gcYoungCollectionCount != null ">#{gcYoungCollectionCount},</if>
+            <if test="gcOldCollectionCount != null ">#{gcOldCollectionCount},</if>
+            <if test="gcClassesTotalLoadedCount != null ">#{gcClassesTotalLoadedCount},</if>
+            <if test="fsTotal != null ">#{fsTotal},</if>
+            <if test="fsFree != null ">#{fsFree},</if>
+            <if test="transportServerOpen != null ">#{transportServerOpen},</if>
+            <if test="httpCurrentOpen != null ">#{httpCurrentOpen},</if>
+            <if test="scriptCompilations != null ">#{scriptCompilations},</if>
+            <if test="insertTime != null ">#{insertTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMonitorAdminClusterNodesStats" parameterType="MonitorAdminClusterNodesStats">
+        update monitor_admin_cluster_nodes_stats
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clusterInfo != null  and clusterInfo != ''">cluster_info = #{clusterInfo},</if>
+            <if test="clusterName != null  and clusterName != ''">cluster_name = #{clusterName},</if>
+            <if test="nodesTotal != null ">nodes_total = #{nodesTotal},</if>
+            <if test="nodesIp != null  and nodesIp != ''">nodes_ip = #{nodesIp},</if>
+            <if test="nodesRoles != null  and nodesRoles != ''">nodes_roles = #{nodesRoles},</if>
+            <if test="monitorType != null  and monitorType != ''">monitor_type = #{monitorType},</if>
+            <if test="indicesDocCount != null ">indices_doc_count = #{indicesDocCount},</if>
+            <if test="indicesStoreSize != null ">indices_store_size = #{indicesStoreSize},</if>
+            <if test="indicesIndexTotal != null ">indices_index_total = #{indicesIndexTotal},</if>
+            <if test="indicesIndexCurrent != null ">indices_index_current = #{indicesIndexCurrent},</if>
+            <if test="indicesGetTotal != null ">indices_get_total = #{indicesGetTotal},</if>
+            <if test="indicesGetCurrent != null ">indices_get_current = #{indicesGetCurrent},</if>
+            <if test="indicesQueryTotal != null ">indices_query_total = #{indicesQueryTotal},</if>
+            <if test="indicesQueryCurrent != null ">indices_query_current = #{indicesQueryCurrent},</if>
+            <if test="indicesScrollTotal != null ">indices_scroll_total = #{indicesScrollTotal},</if>
+            <if test="indicesScrollCurrent != null ">indices_scroll_current = #{indicesScrollCurrent},</if>
+            <if test="indicesMergesCurrent != null ">indices_merges_current = #{indicesMergesCurrent},</if>
+            <if test="indicesMergersDocs != null ">indices_mergers_docs = #{indicesMergersDocs},</if>
+            <if test="indicesRefreshTotal != null ">indices_refresh_total = #{indicesRefreshTotal},</if>
+            <if test="indicesFlushTotal != null ">indices_flush_total = #{indicesFlushTotal},</if>
+            <if test="indicesQueryCacheSize != null ">indices_query_cache_size = #{indicesQueryCacheSize},</if>
+            <if test="indicesQueryCacheTotal != null ">indices_query_cache_total = #{indicesQueryCacheTotal},</if>
+            <if test="indicesQueryCacheHitCount != null ">indices_query_cache_hit_count = #{indicesQueryCacheHitCount},</if>
+            <if test="indicesQueryCacheMissCount != null ">indices_query_cache_miss_count = #{indicesQueryCacheMissCount},</if>
+            <if test="indicesSegmentsCount != null ">indices_segments_count = #{indicesSegmentsCount},</if>
+            <if test="indicesSegmentsMemorySize != null ">indices_segments_memory_size = #{indicesSegmentsMemorySize},</if>
+            <if test="indicesSegmentsMemoryTermsSize != null ">indices_segments_memory_terms_size = #{indicesSegmentsMemoryTermsSize},</if>
+            <if test="indicesTranslogSize != null ">indices_translog_size = #{indicesTranslogSize},</if>
+            <if test="osCpuPercent != null ">os_cpu_percent = #{osCpuPercent},</if>
+            <if test="osMemTotal != null ">os_mem_total = #{osMemTotal},</if>
+            <if test="osMemFree != null ">os_mem_free = #{osMemFree},</if>
+            <if test="osMemUsed != null ">os_mem_used = #{osMemUsed},</if>
+            <if test="jvmHeapUsed != null ">jvm_heap_used = #{jvmHeapUsed},</if>
+            <if test="jvmHeapMax != null ">jvm_heap_max = #{jvmHeapMax},</if>
+            <if test="threadsCount != null ">threads_count = #{threadsCount},</if>
+            <if test="threadsPeakCount != null ">threads_peak_count = #{threadsPeakCount},</if>
+            <if test="gcYoungCollectionCount != null ">gc_young_collection_count = #{gcYoungCollectionCount},</if>
+            <if test="gcOldCollectionCount != null ">gc_old_collection_count = #{gcOldCollectionCount},</if>
+            <if test="gcClassesTotalLoadedCount != null ">gc_classes_total_loaded_count = #{gcClassesTotalLoadedCount},</if>
+            <if test="fsTotal != null ">fs_total = #{fsTotal},</if>
+            <if test="fsFree != null ">fs_free = #{fsFree},</if>
+            <if test="transportServerOpen != null ">transport_server_open = #{transportServerOpen},</if>
+            <if test="httpCurrentOpen != null ">http_current_open = #{httpCurrentOpen},</if>
+            <if test="scriptCompilations != null ">script_compilations = #{scriptCompilations},</if>
+            <if test="insertTime != null ">insert_time = #{insertTime},</if>
+        </trim>
+        where pk_id = #{pkId}
+    </update>
+
+    <delete id="deleteMonitorAdminClusterNodesStatsById" parameterType="Long">
+        delete from monitor_admin_cluster_nodes_stats where pk_id = #{pkId}
+    </delete>
+
+    <delete id="deleteMonitorAdminClusterNodesStatsByIds" parameterType="String">
+        delete from monitor_admin_cluster_nodes_stats where pk_id in 
+        <foreach item="pkId" collection="array" open="(" separator="," close=")">
+            #{pkId}
+        </foreach>
+    </delete>
+    
+</mapper>

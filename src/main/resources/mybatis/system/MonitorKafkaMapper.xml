@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.project.system.kafka.mapper.MonitorKafkaMapper">
+    
+    <resultMap type="MonitorKafka" id="MonitorKafkaResult">
+        <result property="id"    column="id"    />
+        <result property="cluster"    column="cluster"    />
+        <result property="topic"    column="topic"    />
+        <result property="partitionssize"    column="partitionsSize"    />
+        <result property="brokerssize"    column="brokersSize"    />
+        <result property="permessagesize"    column="perMessageSize"    />
+        <result property="allmessagesize"    column="allMessageSize"    />
+        <result property="curmessagesize"    column="curMessageSize"    />
+        <result property="latestoffset"    column="latestOffset"    />
+        <result property="maxlatestoffset"    column="maxLatestOffset"    />
+        <result property="avglatestoffset"    column="avgLatestOffset"    />
+        <result property="minlatestoffset"    column="minLatestOffset"    />
+        <result property="earliestoffset"    column="earliestOffset"    />
+        <result property="maxearliestoffset"    column="maxEarliestOffset"    />
+        <result property="avgearliestoffset"    column="avgEarliestOffset"    />
+        <result property="minearliestoffset"    column="minEarliestOffset"    />
+        <result property="insertdate"    column="insertDate"    />
+    </resultMap>
+
+    <sql id="selectMonitorKafkaVo">
+        select id, cluster, topic, partitionsSize, brokersSize, perMessageSize, allMessageSize, curMessageSize, avgLatestOffset, minLatestOffset, maxEarliestOffset, avgEarliestOffset, minEarliestOffset, insertDate from monitor_kafka
+    </sql>
+
+    <select id="selectMonitorKafkaList" parameterType="MonitorKafka" resultMap="MonitorKafkaResult">
+        <include refid="selectMonitorKafkaVo"/>
+        <where>
+            <if test="cluster != null  and cluster != ''"> and cluster = #{cluster}</if>
+            <if test="topic != null  and topic != ''"> and topic = #{topic}</if>
+            <if test="partitionssize != null "> and partitionsSize = #{partitionssize}</if>
+            <if test="brokerssize != null "> and brokersSize = #{brokerssize}</if>
+            <if test="permessagesize != null "> and perMessageSize = #{permessagesize}</if>
+            <if test="allmessagesize != null "> and allMessageSize = #{allmessagesize}</if>
+            <if test="curmessagesize != null "> and curMessageSize = #{curmessagesize}</if>
+            <!--<if test="latestoffset != null  and latestoffset != ''"> and latestOffset = #{latestoffset}</if>-->
+            <!--<if test="maxlatestoffset != null "> and maxLatestOffset = #{maxlatestoffset}</if>-->
+            <if test="avglatestoffset != null "> and avgLatestOffset = #{avglatestoffset}</if>
+            <if test="minlatestoffset != null "> and minLatestOffset = #{minlatestoffset}</if>
+            <!--<if test="earliestoffset != null  and earliestoffset != ''"> and earliestOffset = #{earliestoffset}</if>-->
+            <if test="maxearliestoffset != null "> and maxEarliestOffset = #{maxearliestoffset}</if>
+            <if test="avgearliestoffset != null "> and avgEarliestOffset = #{avgearliestoffset}</if>
+            <if test="minearliestoffset != null "> and minEarliestOffset = #{minearliestoffset}</if>
+            <if test="insertdate != null and insertdate != ''"> and insertDate = #{insertdate}</if>
+        </where>
+        order by permessagesize DESC ,insertdate DESC
+    </select>
+    
+    <select id="selectMonitorKafkaById" parameterType="Long" resultMap="MonitorKafkaResult">
+        <include refid="selectMonitorKafkaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMonitorKafka" parameterType="MonitorKafka" useGeneratedKeys="true" keyProperty="id">
+        insert into monitor_kafka
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cluster != null  and cluster != ''">cluster,</if>
+            <if test="topic != null  and topic != ''">topic,</if>
+            <if test="partitionssize != null ">partitionsSize,</if>
+            <if test="brokerssize != null ">brokersSize,</if>
+            <if test="permessagesize != null ">perMessageSize,</if>
+            <if test="allmessagesize != null ">allMessageSize,</if>
+            <if test="curmessagesize != null ">curMessageSize,</if>
+            <if test="latestoffset != null  and latestoffset != ''">latestOffset,</if>
+            <if test="maxlatestoffset != null ">maxLatestOffset,</if>
+            <if test="avglatestoffset != null ">avgLatestOffset,</if>
+            <if test="minlatestoffset != null ">minLatestOffset,</if>
+            <if test="earliestoffset != null  and earliestoffset != ''">earliestOffset,</if>
+            <if test="maxearliestoffset != null ">maxEarliestOffset,</if>
+            <if test="avgearliestoffset != null ">avgEarliestOffset,</if>
+            <if test="minearliestoffset != null ">minEarliestOffset,</if>
+            <if test="insertdate != null ">insertDate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cluster != null  and cluster != ''">#{cluster},</if>
+            <if test="topic != null  and topic != ''">#{topic},</if>
+            <if test="partitionssize != null ">#{partitionssize},</if>
+            <if test="brokerssize != null ">#{brokerssize},</if>
+            <if test="permessagesize != null ">#{permessagesize},</if>
+            <if test="allmessagesize != null ">#{allmessagesize},</if>
+            <if test="curmessagesize != null ">#{curmessagesize},</if>
+            <if test="latestoffset != null  and latestoffset != ''">#{latestoffset},</if>
+            <if test="maxlatestoffset != null ">#{maxlatestoffset},</if>
+            <if test="avglatestoffset != null ">#{avglatestoffset},</if>
+            <if test="minlatestoffset != null ">#{minlatestoffset},</if>
+            <if test="earliestoffset != null  and earliestoffset != ''">#{earliestoffset},</if>
+            <if test="maxearliestoffset != null ">#{maxearliestoffset},</if>
+            <if test="avgearliestoffset != null ">#{avgearliestoffset},</if>
+            <if test="minearliestoffset != null ">#{minearliestoffset},</if>
+            <if test="insertdate != null ">#{insertdate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMonitorKafka" parameterType="MonitorKafka">
+        update monitor_kafka
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cluster != null  and cluster != ''">cluster = #{cluster},</if>
+            <if test="topic != null  and topic != ''">topic = #{topic},</if>
+            <if test="partitionssize != null ">partitionsSize = #{partitionssize},</if>
+            <if test="brokerssize != null ">brokersSize = #{brokerssize},</if>
+            <if test="permessagesize != null ">perMessageSize = #{permessagesize},</if>
+            <if test="allmessagesize != null ">allMessageSize = #{allmessagesize},</if>
+            <if test="curmessagesize != null ">curMessageSize = #{curmessagesize},</if>
+            <if test="latestoffset != null  and latestoffset != ''">latestOffset = #{latestoffset},</if>
+            <if test="maxlatestoffset != null ">maxLatestOffset = #{maxlatestoffset},</if>
+            <if test="avglatestoffset != null ">avgLatestOffset = #{avglatestoffset},</if>
+            <if test="minlatestoffset != null ">minLatestOffset = #{minlatestoffset},</if>
+            <if test="earliestoffset != null  and earliestoffset != ''">earliestOffset = #{earliestoffset},</if>
+            <if test="maxearliestoffset != null ">maxEarliestOffset = #{maxearliestoffset},</if>
+            <if test="avgearliestoffset != null ">avgEarliestOffset = #{avgearliestoffset},</if>
+            <if test="minearliestoffset != null ">minEarliestOffset = #{minearliestoffset},</if>
+            <if test="insertdate != null ">insertDate = #{insertdate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMonitorKafkaById" parameterType="Long">
+        delete from monitor_kafka where id = #{id}
+    </delete>
+
+    <delete id="deleteMonitorKafkaByIds" parameterType="String">
+        delete from monitor_kafka where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

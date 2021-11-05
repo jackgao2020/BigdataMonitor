@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改list')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-database_info-edit" th:object="${databaseInfo}">
+            <input name="databaseIp" th:field="*{databaseIp}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">数据库：</label>
+                <div class="col-sm-8">
+                    <input name="Database_ip" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">账号：</label>
+                <div class="col-sm-8">
+                    <input name="count" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">密码：</label>
+                <div class="col-sm-8">
+                    <input name="password" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input name="remark" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/database_info";
+        $("#form-database_info-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-database_info-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

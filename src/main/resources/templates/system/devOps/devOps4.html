@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <h1 style="text-align:center">BigdataMonitor如何添加运维手册</h1>
+    <h2 style="text-align:left">开发步骤：</h2>
+    <h3 style="text-align:left">1.首先写好运维手册，然后打开Idea，打开BigdataMonitor项目，打开如下图路径找到devOpsController文件。</h3>
+    <h3 style="text-align:left">2.复制框选处代码，在下面粘贴，数字按照最后一个增加，如原来是devOps1则增加为2</h3>
+    <img th:src="@{/img/devOps4/tupian1.png}" >
+    <h3 style="text-align:left">3.新建一个前端展示页面，名字跟上面代码添加的一致</h3>
+    <img th:src="@{/img/devOps4/tupian2.png}" >
+    <h3 style="text-align:left">4.然后将devOps3的代码全部复制到devOps4中去</h3>
+    <h3 style="text-align:left">5.将手册中的照片分别另存为，名字按照tupina1 tupian2... 3. ..4 ...5放到对应的D:\BigdataMonitor\src\main\resources\static\img路径下，单独新建一个文件夹devOps4文件夹，与上文文件名相对应。</h3>
+    <img th:src="@{/img/devOps4/tupian3.png}" >
+    <h3 style="text-align:left">6.将之前命名的图片全部放进此文件夹备用。</h3>
+    <h3 style="text-align:left">7.打开本地，启动项目D:\BigdataMonitor\src\main\java\com\xl\MonitorApplication.java 启动后看到成功字样如下图2为启动成功。</h3>
+    <h4 style="text-align:left">项目启动成功后，打开浏览器，进入本地页面  </h4>
+    <h4 style="text-align:left">本地地址 http://localhost:8686/login    账号 admin 密码 123456</h4>
+    <img th:src="@{/img/devOps4/tupian4.png}" >
+    <img th:src="@{/img/devOps4/tupian5.png}" >
+    <h3 style="text-align:left">8.打开菜单-逐级点击进入新增界面，按照如下图方式具体填写信息。点击确定后，刷新下网页即可展示。</h3>
+    <img th:src="@{/img/devOps4/tupian6.png}" >
+    <img th:src="@{/img/devOps4/tupian7.png}" >
+    <h3 style="text-align:left">9.此时打开新建的子菜单，打开新建的devOps4.html前端文件，一边修改一遍刷新界面查看网页前端的变化。</h3>
+    <h3 style="text-align:left">10.开始编写前端页面，将手册内容一 一展现。 </h3>
+    <h4 style="text-align:left">
+        <xmp >
+            <h1> style="text-align:center">BigdataMonitor 开发手册-展示表数据</h1>
+        </xmp>
+
+        <h4 style="text-align:left"> 居中标题< h1>到< h6>字体逐渐变小，根据具体情况使用。</h4>
+
+        <xmp >
+             <img th:src="@{/img/devOps3/tupian1.png}" >  图片路径地址和图片名依次使用，依次将手册内用逐行实现就可以了
+        </xmp>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+</body>
+</html>

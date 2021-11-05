@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('list列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>解决状态：</label>
+                                <select name="resolvedState">
+                                    <option value="">所有</option>
+                                    <option value="已解决">已解决</option>
+                                    <option value="未解决">未解决</option>
+
+                                    <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                                </select>
+                            </li>
+                            <!--<li>-->
+                                <!--<label>需要协调方：</label>-->
+                                <!--<input type="text" name="needCoordinator"/>-->
+                            <!--</li>-->
+                            <li class="select-time">
+                                <label>开始日期：</label>
+                                <input type="text" class="time-input" id="startDate" placeholder="开始时间" name="startDate"/>
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endDate" placeholder="结束时间" name="params[endStartDate]"/>-->
+                            </li>
+                            <!--<li>-->
+                                <!--<label>开始时间：</label>-->
+                                <!--<input type="text" name="startTime"/>-->
+                            <!--</li>-->
+                            <li>
+                                <label>分类：</label>
+                                <select name="classify">
+                                    <option value="">所有</option>
+                                    <option value="平台">平台</option>
+                                    <option value="职场">职场</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>现象：</label>
+                                <input type="text" name="phenomenon"/>
+                            </li>
+                            <li>
+                                <label>提报人姓名：</label>
+                                <input type="text" name="quesetionName"/>
+                            </li>
+                            <li>
+                                <label>所属职场：</label>
+                                <input type="text" name="workplace"/>
+                            </li>
+                            <li>
+                                <label>故障原因：</label>
+                                <select name="cause">
+                                    <option value="">所有</option>
+                                    <option value="电脑故障">电脑故障</option>
+                                    <option value="服务请求">服务请求</option>
+                                    <option value="账号管理">账号管理</option>
+                                    <option value="固定任务">固定任务</option>
+                                    <option value="硬件故障">硬件故障</option>
+                                    <option value="升级故障">升级故障</option>
+
+                                </select>
+                            </li>
+                            <li>
+                                <label>故障原因子项：</label>
+                                <input type="text" name="failureCauseSubitem"/>
+                            </li>
+                            <li>
+                                <label>服务量：</label>
+                                <select name="volume">
+                                    <option value="">所有</option>
+                                    <option value="单台">单台</option>
+                                    <option value="多台">多台</option>
+                                    <option value="批量">批量</option>
+
+                                </select>
+                            </li>
+                            <li>
+                                <label>处理措施：</label>
+                                <input type="text" name="treatmentMeasures"/>
+                            </li>
+                            <li>
+                                <label>优化项：</label>
+                                <input type="text" name="optimizationItem"/>
+                            </li>
+                            <li>
+                                <label>业务是否中断：</label>
+                                <select name="isBreak">
+                                    <option value="">所有</option>
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+
+                                </select>
+                            </li>
+                            <li>
+                                <label>所属坐席：</label>
+                                <select name="seat">
+                                    <option value="">所有</option>
+                                    <option value="一线坐席">一线坐席</option>
+                                    <option value="二线坐席">二线坐席</option>
+
+                                </select>
+                            </li>
+                            <li>
+                                <label>接口人：</label>
+                                <input type="text" name="contactPerson"/>
+                            </li>
+                            <li class="select-time">
+                                <label>结束日期：</label>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束日期" name="StopDate"/>
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endStopDate]"/>-->
+                            </li>
+                            <!--<li>-->
+                                <!--<label>结束时间：</label>-->
+                                <!--<input type="text" name="stopTime"/>-->
+                            <!--</li>-->
+                            <li>
+                                <label>关联问题号：</label>
+                                <input type="text" name="relevanceNo"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:report:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:report:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:report:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:report:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:report:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:report:remove')}]];
+        var resolvedStateDatas = [[${@dict.getType('weekly_report')}]];
+        var classifyDatas = [[${@dict.getType('weekly_report')}]];
+        var causeDatas = [[${@dict.getType('weekly_report')}]];
+        var volumeDatas = [[${@dict.getType('weekly_report')}]];
+        var isBreakDatas = [[${@dict.getType('weekly_report')}]];
+        var seatDatas = [[${@dict.getType('weekly_report')}]];
+        var prefix = ctx + "system/report";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "list",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'resolvedState', 
+                    title: '解决状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(resolvedStateDatas, value);
+                    }
+                },
+                {
+                    field: 'needCoordinator', 
+                    title: '需要协调方'
+                },
+                {
+                    field: 'no', 
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'beginDate',
+                    title: '开始日期'
+                },
+                {
+                    field: 'startTime', 
+                    title: '开始时间'
+                },
+                {
+                    field: 'classify', 
+                    title: '分类',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(classifyDatas, value);
+                    }
+                },
+                {
+                    field: 'phenomenon', 
+                    title: '现象'
+                },
+                {
+                    field: 'quesetionName', 
+                    title: '提报人姓名'
+                },
+                {
+                    field: 'workplace', 
+                    title: '所属职场'
+                },
+                {
+                    field: 'cause', 
+                    title: '故障原因',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(causeDatas, value);
+                    }
+                },
+                {
+                    field: 'failureCauseSubitem', 
+                    title: '故障原因子项'
+                },
+                {
+                    field: 'volume', 
+                    title: '服务量',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(volumeDatas, value);
+                    }
+                },
+                {
+                    field: 'treatmentMeasures', 
+                    title: '处理措施'
+                },
+                {
+                    field: 'optimizationItem', 
+                    title: '优化项'
+                },
+                {
+                    field: 'isBreak', 
+                    title: '业务是否中断',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(isBreakDatas, value);
+                    }
+                },
+                {
+                    field: 'seat', 
+                    title: '所属坐席',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(seatDatas, value);
+                    }
+                },
+                {
+                    field: 'contactPerson', 
+                    title: '接口人'
+                },
+                {
+                    field: 'endDate',
+                    title: '结束日期'
+                },
+                {
+                    field: 'stopTime', 
+                    title: '结束时间'
+                },
+                {
+                    field: 'relevanceNo', 
+                    title: '关联问题号'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.no + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.no + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

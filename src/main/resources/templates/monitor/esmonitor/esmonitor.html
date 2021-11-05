@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('es索引监控列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>集群信息：</label>
+                            <select name="clusterinfo" th:with="type=${@dict.getType('cluster_info')}">
+                                <option value="" selected>--请选择--</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>索引名称：</label>
+                            <input type="text" name="indexname"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i> 搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i> 重置</a>
+                        </li>
+                        <li style="float:right">
+                            <label>刷新频率：</label>
+                            <select id="refreshinterval">
+                                <option value="3" selected>3s</option>
+                                <option value="5" >5s</option>
+                                <option value="10" >10s</option>
+                                <option value="30">30s</option>
+                                <option value="60">1分钟</option>
+                                <option value="600">10分钟</option>
+                                <option value="6000">暂不刷新</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('esmonitor:indexstatus:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('esmonitor:indexstatus:remove')}]];
+    var clusterinfoDatas = [[${@dict.getType('cluster_info')}]];
+    var prefix = ctx + "esmonitor/indexstatus";
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            modalName: "es索引监控",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'indexname',
+                    title: '索引名称'
+                },
+                {
+                    field: 'searchtime',
+                    title: '查询时间'
+                },
+                {
+                    field: 'storesize',
+                    title: '索引大小',
+                    formatter: function(value, row, index) {
+                        return format(value);
+                    }
+                },
+                {
+                    field: 'doccount',
+                    title: '索引文档数量'
+                },
+                {
+                    field: 'querytotal',
+                    title: '索引查询总量'
+                },
+                {
+                    field: 'queryconcurrency',
+                    title: '索引读并发量'
+                },
+                {
+                    field: 'indextotal',
+                    title: '索引写入总量'
+                },
+                {
+                    field: 'indexconcurrency',
+                    title: '索引写并发量'
+                },
+
+                {
+                    field: 'segmentscount',
+                    title: '索引段总量'
+                },
+                {
+                    field: 'clusterinfo',
+                    title: '集群信息',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(clusterinfoDatas, value);
+                    }
+                }]
+        };
+        $.table.init(options);
+        var set=setInterval(refreshInverval,$('#refreshinterval').val()*1000);
+        function refreshInverval(){
+            clearInterval(set);
+            if($('#refreshinterval').val()<6000){
+                $.table.search();
+                set = setInterval(refreshInverval, $('#refreshinterval').val()*1000);
+                //执行task
+                $.ajax({
+                    type: "POST",
+                    url: "/monitorTask/startMonitorIndicesStatsTask"
+                });
+            }
+        }
+    });
+    function format(value) {
+        if(value<=1024) return value+'B';
+        var index=0;
+        var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] ;
+        while (value/1024>=1){
+            value=value/1024;
+            index++;
+        }
+        return value.toFixed(2)+units[index];
+
+    }
+</script>
+</body>
+</html>

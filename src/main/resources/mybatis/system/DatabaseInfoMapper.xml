@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.project.system.database_info.mapper.DatabaseInfoMapper">
+    
+    <resultMap type="DatabaseInfo" id="DatabaseInfoResult">
+        <result property="databaseIp"    column="Database_ip"    />
+        <result property="count"    column="count"    />
+        <result property="password"    column="password"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectDatabaseInfoVo">
+        select Database_ip, count, password, remark from Database_Info
+    </sql>
+
+    <select id="selectDatabaseInfoList" parameterType="DatabaseInfo" resultMap="DatabaseInfoResult">
+        <include refid="selectDatabaseInfoVo"/>
+        <where>  
+            <if test="databaseIp != null  and databaseIp != ''"> and Database_ip = #{databaseIp}</if>
+            <if test="count != null  and count != ''"> and count = #{count}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+        </where>
+    </select>
+    
+    <select id="selectDatabaseInfoById" parameterType="String" resultMap="DatabaseInfoResult">
+        <include refid="selectDatabaseInfoVo"/>
+        where Database_ip = #{databaseIp}
+    </select>
+        
+    <insert id="insertDatabaseInfo" parameterType="DatabaseInfo">
+        insert into Database_Info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="databaseIp != null  and databaseIp != ''">Database_ip,</if>
+            <if test="count != null  and count != ''">count,</if>
+            <if test="password != null  and password != ''">password,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="databaseIp != null  and databaseIp != ''">#{databaseIp},</if>
+            <if test="count != null  and count != ''">#{count},</if>
+            <if test="password != null  and password != ''">#{password},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDatabaseInfo" parameterType="DatabaseInfo">
+        update Database_Info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="count != null  and count != ''">count = #{count},</if>
+            <if test="password != null  and password != ''">password = #{password},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where Database_ip = #{databaseIp}
+    </update>
+
+    <delete id="deleteDatabaseInfoById" parameterType="String">
+        delete from Database_Info where Database_ip = #{databaseIp}
+    </delete>
+
+    <delete id="deleteDatabaseInfoByIds" parameterType="String">
+        delete from Database_Info where Database_ip in 
+        <foreach item="databaseIp" collection="array" open="(" separator="," close=")">
+            #{databaseIp}
+        </foreach>
+    </delete>
+    
+</mapper>

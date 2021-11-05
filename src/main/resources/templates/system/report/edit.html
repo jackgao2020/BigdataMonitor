@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改list')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-report-edit" th:object="${weeklyReport}">
+            <input name="no" th:field="*{no}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">解决状态：</label>
+                <div class="col-sm-8">
+                    <select name="resolvedState" class="form-control m-b" th:with="type=${@dict.getType('weekly_report')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{resolvedState}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">需要协调方：</label>
+                <div class="col-sm-8">
+                    <input name="needCoordinator" th:field="*{needCoordinator}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">开始日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="startDate" th:value="${#dates.format(weeklyReport.startDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">开始时间：</label>
+                <div class="col-sm-8">
+                    <input name="startTime" th:field="*{startTime}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">分类：</label>
+                <div class="col-sm-8">
+                    <select name="classify" class="form-control m-b" th:with="type=${@dict.getType('weekly_report')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{classify}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">现象：</label>
+                <div class="col-sm-8">
+                    <input name="phenomenon" th:field="*{phenomenon}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">提报人姓名：</label>
+                <div class="col-sm-8">
+                    <input name="quesetionName" th:field="*{quesetionName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">所属职场：</label>
+                <div class="col-sm-8">
+                    <input name="workplace" th:field="*{workplace}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">故障原因：</label>
+                <div class="col-sm-8">
+                    <select name="cause" class="form-control m-b" th:with="type=${@dict.getType('weekly_report')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{cause}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">故障原因子项：</label>
+                <div class="col-sm-8">
+                    <input name="failureCauseSubitem" th:field="*{failureCauseSubitem}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">服务量：</label>
+                <div class="col-sm-8">
+                    <select name="volume" class="form-control m-b" th:with="type=${@dict.getType('weekly_report')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{volume}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">处理措施：</label>
+                <div class="col-sm-8">
+                    <input name="treatmentMeasures" th:field="*{treatmentMeasures}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">优化项：</label>
+                <div class="col-sm-8">
+                    <input name="optimizationItem" th:field="*{optimizationItem}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">业务是否中断：</label>
+                <div class="col-sm-8">
+                    <select name="isBreak" class="form-control m-b" th:with="type=${@dict.getType('weekly_report')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{isBreak}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所属坐席：</label>
+                <div class="col-sm-8">
+                    <select name="seat" class="form-control m-b" th:with="type=${@dict.getType('weekly_report')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{seat}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">接口人：</label>
+                <div class="col-sm-8">
+                    <input name="contactPerson" th:field="*{contactPerson}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">结束日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="stopData" th:value="${#dates.format(weeklyReport.stopData, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">结束时间：</label>
+                <div class="col-sm-8">
+                    <input name="stopTime" th:field="*{stopTime}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">关联问题号：</label>
+                <div class="col-sm-8">
+                    <input name="relevanceNo" th:field="*{relevanceNo}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/report";
+        $("#form-report-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-report-edit').serialize());
+            }
+        }
+
+        $("input[name='startDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='stopData']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

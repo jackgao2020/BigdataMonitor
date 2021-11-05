@@ -1,0 +1,15 @@
+1：下载SDK的JAR包
+https://developers.dingtalk.com/document/resourcedownload/download-server-sdk/title-12y-g4g-zn2?pnamespace=tutorial
+
+
+2：导入Maven
+mvn install:install-file -DgroupId=com.dingtalk.api -DartifactId=top-api-sdk-dev -Dversion=ding-open-mc-SNAPSHOT -Dfile=taobao-sdk-java-auto_1479188381469-20210512.jar -Dpackaging=jar -DgeneratePom=true
+
+
+3：配置POM
+<!--钉钉工具包-->
+<dependency>
+    <groupId>com.dingtalk.api</groupId>
+    <artifactId>top-api-sdk-dev</artifactId>
+    <version>ding-open-mc-SNAPSHOT</version>
+</dependency>
